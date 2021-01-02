@@ -1,0 +1,17 @@
+﻿@model BlogTemplate.ViewModels.ShowPostVM
+
+<form asp-action="LoadPost" asp-controller="Post" asp-anti-forgery="true">
+    <div>
+        <div class="form-group">
+            <h1 asp-for="Title">@Model.Title</h1>
+            <br />
+            @if (Model.Author != null)
+            {
+            <a class="text-info">@Model.Author.Login</a>
+            }
+            <a class="text-info">@Model.CreatedDate.ToShortDateString() @Model.CreatedDate.ToShortTimeString()</a>
+            <br />
+            <p>@Model.Content</p>
+        </div>
+    </div>
+</form>

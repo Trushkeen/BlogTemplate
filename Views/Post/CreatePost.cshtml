@@ -1,0 +1,12 @@
+﻿@model BlogTemplate.ViewModels.CreatePostVM
+
+    <form asp-action="CreatePost" asp-controller="Post" asp-anti-forgery="true">
+        <p>Заголовок</p>
+        <input type="text" asp-for="Title" />
+        <br />
+        <p>Содержимое</p>
+        <textarea class="form-control" rows="10" asp-for="Content"></textarea>
+        <br />
+        <input type="submit" class="btn btn-warning" value="Сохранить" />
+    </form>
+

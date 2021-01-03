@@ -20,15 +20,12 @@ namespace BlogTemplate.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LatestPost()
+        public async Task<IActionResult> ShowPost(int id)
         {
-            ShowPostVM model = new ShowPostVM();
-            var latestPost = await db.Posts.FirstOrDefaultAsync(p => p.CreatedDate == db.Posts.Max(d => d.CreatedDate));
-            if (latestPost != null)
+            var post = await db.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (post != null)
             {
-                model.Post = latestPost;
-                model.Author = latestPost.Author;
-                return View("Post", model);
+                return View("Post", post);
             }
             else return new NotFoundResult();
         }

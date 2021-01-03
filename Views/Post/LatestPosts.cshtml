@@ -11,6 +11,7 @@
         }
         <a class="text-info">@post.CreatedDate.ToShortDateString() @post.CreatedDate.ToShortTimeString()</a>
         <br />
-        <p>@post.Content</p>
+        <p>@post.Content.Remove(255)...</p>
+        <a class="text-md-left" asp-action="ShowPost" asp-controller="Post" asp-route-id="@post.Id">Читать далее...</a>
     </div>
 }

@@ -1,5 +1,6 @@
 ﻿using BlogTemplate.Core.Models;
 using BlogTemplate.Core.ViewModels;
+using BlogTemplate.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,18 @@ namespace BlogTemplate.Core.Controllers
     public class AccountController : Controller
     {
         private BlogContext db;
+        private CurrentUserService currentUser;
 
-        public AccountController(BlogContext dbUsers)
+        public AccountController(BlogContext dbUsers, CurrentUserService currentUser)
         {
             db = dbUsers;
+            this.currentUser = currentUser;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowProfile()
+        {
+            return View("Profile", await currentUser.GetCurrentUserAsync());
         }
 
         [HttpGet]
@@ -38,7 +47,7 @@ namespace BlogTemplate.Core.Controllers
                 {
                     await Authenticate(user.Login);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("LatestPosts", "Post");
                 }
             }
             return View(model);
@@ -64,7 +73,7 @@ namespace BlogTemplate.Core.Controllers
 
                     await Authenticate(model.Login);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("LatestPosts", "Post");
                 }
             }
             return View(model);

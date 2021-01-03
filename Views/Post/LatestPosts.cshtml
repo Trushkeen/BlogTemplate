@@ -3,7 +3,7 @@
 @foreach (var post in Model)
 {
     <div class="form-group">
-        <h1 asp-for="Title">@post.Title</h1>
+        <a class="h1 text-black-50" asp-for="Title" asp-action="ShowPost" asp-controller="Post" asp-route-id="@post.Id">@post.Title</a>
         <br />
         @if (post.Author != null)
         {
@@ -11,7 +11,15 @@
         }
         <a class="text-info">@post.CreatedDate.ToShortDateString() @post.CreatedDate.ToShortTimeString()</a>
         <br />
-        <p>@post.Content.Remove(255)...</p>
+        <p>
+            @{string shrinked = post.Content; }
+            @if (post.Content.Length > 255)
+            {
+                shrinked = post.Content.Remove(255);
+            }
+            <a>@shrinked</a>
+        </p>
+
         <a class="text-md-left" asp-action="ShowPost" asp-controller="Post" asp-route-id="@post.Id">Читать далее...</a>
     </div>
 }

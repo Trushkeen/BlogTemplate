@@ -4,6 +4,7 @@ todo:
 - comments
 - user pictures
 - likes
+- password change
 
 done:
 - creating post

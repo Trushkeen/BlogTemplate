@@ -27,8 +27,12 @@
                     </ul>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="nav-link text-dark font-weight-bold">@User.Identity.Name</a>
+                        <a class="nav-link text-dark font-weight-bold" asp-controller="Account" asp-action="ShowProfile">@User.Identity.Name</a>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
                     }
                 </div>
             </div>

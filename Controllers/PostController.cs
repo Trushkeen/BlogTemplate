@@ -1,4 +1,5 @@
 ﻿using BlogTemplate.Core.Models;
+using BlogTemplate.Services;
 using BlogTemplate.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace BlogTemplate.Controllers
     public class PostController : Controller
     {
         private BlogContext db;
+        private CurrentUserService currentUser;
 
-        public PostController(BlogContext dbUsers)
+        public PostController(BlogContext dbUsers, CurrentUserService currentUser)
         {
             db = dbUsers;
+            this.currentUser = currentUser;
         }
 
         [HttpGet]
@@ -42,6 +45,7 @@ namespace BlogTemplate.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult CreatePost()
         {
             return View();
@@ -51,18 +55,19 @@ namespace BlogTemplate.Controllers
         [Authorize]
         public async Task<IActionResult> CreatePost(CreatePostVM model)
         {
+            var author = await currentUser.GetCurrentUserAsync();
             var post = new Post()
             {
                 Title = model.Title,
                 Content = model.Content,
-                Author = await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name),
+                Author = author,
                 CreatedDate = DateTime.Now,
                 Likes = 0
             };
             await db.Posts.AddAsync(post);
             await db.SaveChangesAsync();
 
-            return RedirectToAction("LatestPost", "Post");
+            return RedirectToAction("LatestPosts", "Post");
         }
     }
 }

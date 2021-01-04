@@ -3,13 +3,15 @@ this is test project just to support and increase my own skills in backend
 todo:
 - comments
 - user pictures
-- likes
 - password change
+- blogs (channels with authors)
 
 done:
 - creating post
 - showing post
 - auth
+- deleting post
+- likes
 
 known bugs:
-- author in post is missing
+- still losing a user info

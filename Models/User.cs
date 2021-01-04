@@ -11,6 +11,7 @@ namespace BlogTemplate.Core.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public int Rating { get; set; }
+        public bool IsAdmin { get; set; }
         public List<Post> Posts { get; set; }
     }
 }

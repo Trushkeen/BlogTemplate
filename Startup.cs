@@ -31,7 +31,7 @@ namespace BlogTemplate
 
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<CurrentUserService>();
+            services.AddTransient<UserService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

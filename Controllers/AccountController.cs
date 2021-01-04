@@ -16,9 +16,9 @@ namespace BlogTemplate.Core.Controllers
     public class AccountController : Controller
     {
         private BlogContext db;
-        private CurrentUserService currentUser;
+        private UserService currentUser;
 
-        public AccountController(BlogContext dbUsers, CurrentUserService currentUser)
+        public AccountController(BlogContext dbUsers, UserService currentUser)
         {
             db = dbUsers;
             this.currentUser = currentUser;

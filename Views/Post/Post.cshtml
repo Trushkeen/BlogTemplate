@@ -1,16 +1,36 @@
 ﻿@model BlogTemplate.Core.Models.Post
+@inject BlogTemplate.Services.UserService userService
+
 <form asp-action="LoadPost" asp-controller="Post" asp-anti-forgery="true">
+    @{var user = userService.GetCurrentUser(); }
     <div>
         <div class="form-group">
+            @if (user != null && user.IsAdmin)
+            {
+                <div>
+                    <a>Возможности админа</a>
+                    <br />
+                    <button class="btn-danger"
+                            asp-action="DeletePost" asp-controller="Post" asp-route-id="@Model.Id">
+                        Удалить пост
+                    </button>
+                </div>
+            }
             <h1 asp-for="Title">@Model.Title</h1>
             <br />
-            @if (Model.Author != null)
+            @if (!Model.IsAnonymous)
             {
-            <a class="text-info">@Model.Author.Login</a>
+                <a class="text-info text-dark">@userService.GetUserById(Model.AuthorId).Login</a>
             }
-            <a class="text-info">@Model.CreatedDate.ToShortDateString() @Model.CreatedDate.ToShortTimeString()</a>
-            <br />
+            <a class="text-info float-right">@Model.CreatedDate.ToShortDateString() @Model.CreatedDate.ToShortTimeString()</a>
+            <p></p>
             <p>@Model.Content</p>
+            <p></p>
+            <button class="btn-outline-success rounded"
+                    asp-action="LikePost" asp-controller="Post" asp-route-id="@Model.Id">
+                Нравится
+            </button>
+            <a class="float-right">Оценка: @Model.Likes</a>
         </div>
     </div>
 </form>

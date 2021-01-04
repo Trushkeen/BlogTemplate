@@ -14,9 +14,9 @@ namespace BlogTemplate.Controllers
     public class PostController : Controller
     {
         private BlogContext db;
-        private CurrentUserService currentUser;
+        private UserService currentUser;
 
-        public PostController(BlogContext dbUsers, CurrentUserService currentUser)
+        public PostController(BlogContext dbUsers, UserService currentUser)
         {
             db = dbUsers;
             this.currentUser = currentUser;
@@ -36,7 +36,7 @@ namespace BlogTemplate.Controllers
         [HttpGet]
         public IActionResult LatestPosts(int count = 10)
         {
-            var latestPosts = db.Posts.OrderByDescending(d=>d.CreatedDate).Take(count);
+            var latestPosts = db.Posts.OrderByDescending(d => d.CreatedDate).Take(count);
             if (latestPosts != null)
             {
                 return View(latestPosts);
@@ -60,13 +60,47 @@ namespace BlogTemplate.Controllers
             {
                 Title = model.Title,
                 Content = model.Content,
-                Author = author,
+                AuthorId = author.Id,
                 CreatedDate = DateTime.Now,
                 Likes = 0
             };
             await db.Posts.AddAsync(post);
             await db.SaveChangesAsync();
 
+            return RedirectToAction("LatestPosts", "Post");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            var user = await currentUser.GetCurrentUserAsync();
+            if (user.IsAdmin)
+            {
+                var obj = await db.Posts.FirstOrDefaultAsync(p => p.Id == id);
+                db.Posts.Remove(obj);
+                await db.SaveChangesAsync();
+            }
+            return RedirectToAction("LatestPosts", "Post");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> LikePost(int id)
+        {
+            var user = await currentUser.GetCurrentUserAsync();
+            var obj = await db.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (obj.LikedUsers == null)
+            {
+                obj.LikedUsers = new List<User>();
+            }
+            obj.Likes++;
+            obj.LikedUsers.Add(user);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (Exception) { }
             return RedirectToAction("LatestPosts", "Post");
         }
     }

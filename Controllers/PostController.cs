@@ -1,4 +1,5 @@
 ﻿using BlogTemplate.Core.Models;
+using BlogTemplate.Models;
 using BlogTemplate.Services;
 using BlogTemplate.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -36,10 +37,20 @@ namespace BlogTemplate.Controllers
         [HttpGet]
         public IActionResult LatestPosts(int count = 10)
         {
-            var latestPosts = db.Posts.OrderByDescending(d => d.CreatedDate).Take(count);
+            var latestPosts = db.Posts.OrderByDescending(d => d.CreatedDate).Take(count).Include(a=>a.Author);
             if (latestPosts != null)
             {
-                return View(latestPosts);
+                List<ShowPostVM> posts = new List<ShowPostVM>();
+                foreach (var post in latestPosts)
+                {
+                    var postVM = new ShowPostVM()
+                    {
+                        Post = post,
+                        Author = post.Author
+                    };
+                    posts.Add(postVM);
+                }
+                return View(posts);
             }
             else return null;
         }
@@ -60,7 +71,7 @@ namespace BlogTemplate.Controllers
             {
                 Title = model.Title,
                 Content = model.Content,
-                AuthorId = author.Id,
+                Author = author,
                 CreatedDate = DateTime.Now,
                 Likes = 0
             };
@@ -92,10 +103,10 @@ namespace BlogTemplate.Controllers
             var obj = await db.Posts.FirstOrDefaultAsync(p => p.Id == id);
             if (obj.LikedUsers == null)
             {
-                obj.LikedUsers = new List<User>();
+                obj.LikedUsers = new List<LikedUser>();
             }
             obj.Likes++;
-            obj.LikedUsers.Add(user);
+            obj.LikedUsers.Add(new LikedUser(user));
             try
             {
                 await db.SaveChangesAsync();

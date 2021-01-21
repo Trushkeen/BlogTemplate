@@ -1,4 +1,5 @@
 ﻿using BlogTemplate.Core.Models;
+using BlogTemplate.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace BlogTemplate
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
         {
             Database.EnsureCreated();

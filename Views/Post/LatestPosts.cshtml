@@ -1,12 +1,15 @@
-﻿@model IQueryable<BlogTemplate.Core.Models.Post>
+﻿@model List<BlogTemplate.ViewModels.ShowPostVM>
 @inject BlogTemplate.Services.UserService userService
 
 @{var user = await userService.GetCurrentUserAsync(); }
 
-@foreach (var post in Model)
+@foreach (var showPostVM in Model)
 {
+    var post = showPostVM.Post;
     <div class="form-group">
         <a class="h1 text-black-50" asp-for="Title" asp-action="ShowPost" asp-controller="Post" asp-route-id="@post.Id">@post.Title</a>
+        <br />
+        <a class="h5 text-black-50" asp-for="Title" asp-action="ShowPost" asp-controller="Post" asp-route-id="@showPostVM.Author.Id">@showPostVM.Author.Login</a>
         <br />
         <a class="text-info">@post.CreatedDate.ToShortDateString() @post.CreatedDate.ToShortTimeString()</a>
         <br />

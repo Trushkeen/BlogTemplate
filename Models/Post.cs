@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogTemplate.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace BlogTemplate.Core.Models
         public int Likes { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool IsAnonymous { get; set; }
-        public int AuthorId { get; set; }
-        public List<User> LikedUsers { get; set; }
+        public User Author { get; set; }
+        public List<LikedUser> LikedUsers { get; set; }
     }
 }

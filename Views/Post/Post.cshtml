@@ -20,7 +20,7 @@
             <br />
             @if (!Model.IsAnonymous)
             {
-                <a class="text-info text-dark">@userService.GetUserById(Model.AuthorId).Login</a>
+                @*<a class="text-info text-dark">@userService.GetUserById(Model.AuthorId).Login</a>*@
             }
             <a class="text-info float-right">@Model.CreatedDate.ToShortDateString() @Model.CreatedDate.ToShortTimeString()</a>
             <p></p>

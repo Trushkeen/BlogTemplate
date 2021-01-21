@@ -31,6 +31,16 @@ namespace BlogTemplate.Services
             return currentUser;
         }
 
+        public async Task<ShowUserVM> GetCurrentUserVMAsync()
+        {
+            if (currentUser == null)
+            {
+                var username = httpContext.HttpContext.User.Identity.Name;
+                currentUser = await db.Users.FirstOrDefaultAsync(u => u.Login == username);
+            }
+            return new ShowUserVM(currentUser);
+        }
+
         public User GetCurrentUser()
         {
             if (currentUser == null)

@@ -27,7 +27,13 @@ namespace BlogTemplate.Core.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowProfile()
         {
-            return View("Profile", await currentUser.GetCurrentUserAsync());
+            return View("Profile", await currentUser.GetCurrentUserVMAsync());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowProfileById(int id)
+        {
+            return View("Profile", await currentUser.GetUserByIdAsync(id));
         }
 
         [HttpGet]

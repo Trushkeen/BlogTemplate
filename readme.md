@@ -12,6 +12,6 @@ done:
 - auth
 - deleting post
 - likes
+- author near post title (HEBA)|(HO)
 
 known bugs:
-- still losing a user info

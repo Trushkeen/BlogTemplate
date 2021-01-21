@@ -10,12 +10,14 @@ namespace BlogTemplate.ViewModels
     {
         public int Id { get; set; }
         public string Login { get; set; }
+        public int Rating { get; set; }
         public bool IsAdmin { get; set; }
 
         public ShowUserVM(User model)
         {
             Id = model.Id;
             Login = model.Login;
+            Rating = model.Rating;
             IsAdmin = model.IsAdmin;
         }
     }
